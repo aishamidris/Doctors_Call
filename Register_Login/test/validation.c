@@ -1,17 +1,23 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include "validation.h"
 
 int isValidEmail(const char *email) {
-    // You can implement a more robust email validation logic here
-    // For simplicity, we'll just check for the presence of '@'
+    // Basic email format check (presence of '@' and '.com')
+    int at_count = 0;
+    int dotcom_count = 0;
+
     while (*email) {
         if (*email == '@') {
-            return 1; // Valid email
+            at_count++;
+        } else if (*email == '.' && at_count == 1) {
+            dotcom_count++;
         }
         email++;
     }
-    return 0; // Invalid email
+
+    return (at_count == 1 && dotcom_count == 1);
 }
 
 int isValidDateOfBirth(const char *dob) {
@@ -24,6 +30,27 @@ int isValidDateOfBirth(const char *dob) {
     return 0; // Invalid date of birth
 }
 
+int isValidUsername(const char *username) {
+    return (strlen(username) >= 3);
+}
+
+int isValidGender(const char *gender) {
+    char lowercase[10];
+    int i = 0;
+    while (gender[i]) {
+        lowercase[i] = tolower(gender[i]);
+        i++;
+    }
+    lowercase[i] = '\0';
+
+    return (strcmp(lowercase, "m") == 0 || strcmp(lowercase, "f") == 0 ||
+            strcmp(lowercase, "male") == 0 || strcmp(lowercase, "female") == 0);
+}
+
+int isValidPassword(const char *password) {
+    return (strlen(password) >= 6);
+}
+
 int containsUppercase(const char *str) {
     while (*str) {
         if (isupper(*str)) {
@@ -33,4 +60,5 @@ int containsUppercase(const char *str) {
     }
     return 0; // No uppercase letter
 }
+
 
